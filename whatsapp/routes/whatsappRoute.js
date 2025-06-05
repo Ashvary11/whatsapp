@@ -5,6 +5,8 @@ const {
   sendDocument,
   uploadMedia,
   sendAudio,
+  sendImage,
+  sendCTA_URL,
 } = require("../controller/sendMessage");
 
 const multer = require("multer");
@@ -18,6 +20,8 @@ route.post("/sendTemplateMessage", sendTemplateMessage);
 route.post("/uploadMedia", upload.single("file"), uploadMedia);
 route.post("/sendDocument", sendDocument);
 route.post("/sendAudio", sendAudio);
+route.post("/sendImage", sendImage);
+route.post("/sendCTA_URL", sendCTA_URL);
 
 /////////////// webhook
 
