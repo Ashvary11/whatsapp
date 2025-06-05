@@ -14,7 +14,7 @@ let headers = {
 
 const sendTextMessage = async (req, res) => {
   try {
-    const { recipientNumber = "917000240904" } = req.body;
+    const { recipientNumber = "917000240904", message } = req.body;
 
     const data = {
       messaging_product: "whatsapp",
@@ -23,7 +23,7 @@ const sendTextMessage = async (req, res) => {
       type: "text",
       text: {
         preview_url: true,
-        body: "Hello World Text Message From System Postman.",
+        body: message,
       },
     };
     const response = await axios.post(baseUrl, data, {
@@ -187,9 +187,55 @@ const sendDocument = async (req, res) => {
   }
 };
 
+const sendAudio = async (req, res) => {
+  try {
+    const {
+      recipientNumber,
+      mediaId,
+      mediaLink,
+      mediaFileName,
+      mediaCaptionText,
+    } = req.body;
+
+    const document = mediaId
+      ? { id: mediaId, filename: mediaFileName, caption: mediaCaptionText }
+      : { link: mediaLink, filename: mediaFileName, caption: mediaCaptionText };
+
+    const data = {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: recipientNumber,
+      type: "audio",
+      document,
+    };
+    const response = await axios.post(baseUrl, data, {
+      headers,
+    });
+
+    console.log(response);
+
+    res.json({
+      success: true,
+      recipientNumber,
+      response: response.data,
+    });
+  } catch (error) {
+    console.error(
+      "WhatsApp API Error: sendTextMessage",
+      error?.response?.data || error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data || error.message,
+    });
+  }
+};
+
 module.exports = {
   sendTextMessage,
   sendTemplateMessage,
   sendDocument,
   uploadMedia,
+  sendAudio,
 };

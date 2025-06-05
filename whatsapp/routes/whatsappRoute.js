@@ -4,9 +4,11 @@ const {
   sendTemplateMessage,
   sendDocument,
   uploadMedia,
+  sendAudio,
 } = require("../controller/sendMessage");
 
 const multer = require("multer");
+const { verifyWebhook, handleWebhookEvent } = require("../services/webhook");
 const upload = multer({ dest: "uploads/" });
 
 const route = express.Router();
@@ -15,5 +17,11 @@ route.post("/sendTextMessage", sendTextMessage);
 route.post("/sendTemplateMessage", sendTemplateMessage);
 route.post("/uploadMedia", upload.single("file"), uploadMedia);
 route.post("/sendDocument", sendDocument);
+route.post("/sendAudio", sendAudio);
+
+/////////////// webhook
+
+route.get("/webhook", verifyWebhook); // Meta verify endpoint
+route.post("/webhook", handleWebhookEvent); // Meta sends events here
 
 module.exports = route;
