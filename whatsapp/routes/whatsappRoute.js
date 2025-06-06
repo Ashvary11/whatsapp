@@ -7,6 +7,9 @@ const {
   sendAudio,
   sendImage,
   sendCTA_URL,
+  sendVideo,
+  contextualReplies,
+  interactiveList,
 } = require("../controller/sendMessage");
 
 const multer = require("multer");
@@ -22,6 +25,9 @@ route.post("/sendDocument", sendDocument);
 route.post("/sendAudio", sendAudio);
 route.post("/sendImage", sendImage);
 route.post("/sendCTA_URL", sendCTA_URL);
+route.post("/sendVideo", sendVideo);
+route.post("/contextualReplies", contextualReplies);
+route.post("/interactiveList", interactiveList);
 
 /////////////// webhook
 

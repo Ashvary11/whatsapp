@@ -348,6 +348,199 @@ const sendCTA_URL = async (req, res) => {
   }
 };
 
+const sendVideo = async (req, res) => {
+  try {
+    const { recipientNumber, videoId, videoLink, caption } = req.body;
+
+    const video = videoId
+      ? { id: videoId, caption }
+      : { link: videoLink, caption };
+
+    const data = {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: recipientNumber,
+      type: "video",
+      video,
+    };
+    const response = await axios.post(baseUrl, data, {
+      headers,
+    });
+
+    console.log(response.data);
+
+    res.json({
+      success: true,
+      recipientNumber,
+      response: response.data,
+    });
+  } catch (error) {
+    console.error(
+      "WhatsApp API Error: sendTextMessage",
+      error?.response?.data || error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data || error.message,
+    });
+  }
+};
+const contextualReplies = async (req, res) => {
+  try {
+    const { recipientNumber, wamid_to_ReplyTo, message } = req.body;
+
+    const data = {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: recipientNumber,
+      context: {
+        message_id: wamid_to_ReplyTo,
+      },
+      type: "text",
+      text: {
+        body: message,
+      },
+    };
+    const response = await axios.post(baseUrl, data, {
+      headers,
+    });
+
+    console.log(response.data);
+
+    res.json({
+      success: true,
+      recipientNumber,
+      response: response.data,
+    });
+  } catch (error) {
+    console.error(
+      "WhatsApp API Error: sendTextMessage",
+      error?.response?.data || error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data || error.message,
+    });
+  }
+};
+const sendLocation = async (req, res) => {
+  try {
+    const { recipientNumber, latitude, longitude, name, address } = req.body;
+
+    const location = {
+      latitude,
+      longitude,
+      name,
+      address,
+    };
+    const data = {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: recipientNumber,
+      type: "location",
+      location,
+    };
+    const response = await axios.post(baseUrl, data, {
+      headers,
+    });
+
+    console.log(response.data);
+
+    res.json({
+      success: true,
+      recipientNumber,
+      response: response.data,
+    });
+  } catch (error) {
+    console.error(
+      "WhatsApp API Error: sendTextMessage",
+      error?.response?.data || error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data || error.message,
+    });
+  }
+};
+const interactiveList = async (req, res) => {
+  try {
+    const {
+      recipientNumber,
+      headerText,
+      bodyText,
+      footerText,
+      buttonText,
+      sectionTitle,
+      row1Id,
+      row1Description,
+      row1Title,
+    } = req.body;
+
+    const interactive = {
+      type: "list",
+      header: {
+        type: "text",
+        text: headerText,
+      },
+      body: {
+        text: bodyText,
+      },
+      footer: {
+        text: footerText,
+      },
+      action: {
+        button: buttonText,
+        sections: [
+          {
+            title: sectionTitle,
+            rows: [
+              {
+                id: row1Id,
+                title: row1Title,
+                description: row1Description,
+              },
+              // <!-- Additional rows would go here -->
+            ],
+          },
+          //<!-- Additional sections would go here -->
+        ],
+      },
+    };
+
+    const data = {
+      messaging_product: "whatsapp",
+      recipient_type: "individual",
+      to: recipientNumber,
+      type: "interactive",
+      interactive,
+    };
+    const response = await axios.post(baseUrl, data, {
+      headers,
+    });
+
+    console.log(response.data);
+
+    res.json({
+      success: true,
+      recipientNumber,
+      response: response.data,
+    });
+  } catch (error) {
+    console.error(
+      "WhatsApp API Error: sendTextMessage",
+      error?.response?.data || error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      error: error?.response?.data || error.message,
+    });
+  }
+};
+
 module.exports = {
   sendTextMessage,
   sendTemplateMessage,
@@ -356,4 +549,8 @@ module.exports = {
   sendAudio,
   sendImage,
   sendCTA_URL,
+  sendVideo,
+  contextualReplies,
+  sendLocation,
+  interactiveList,
 };
