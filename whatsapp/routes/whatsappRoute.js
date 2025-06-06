@@ -10,6 +10,7 @@ const {
   sendVideo,
   contextualReplies,
   interactiveList,
+  sendLocation,
 } = require("../controller/sendMessage");
 
 const multer = require("multer");
@@ -26,6 +27,7 @@ route.post("/sendAudio", sendAudio);
 route.post("/sendImage", sendImage);
 route.post("/sendCTA_URL", sendCTA_URL);
 route.post("/sendVideo", sendVideo);
+route.post("/sendLocation", sendLocation);
 route.post("/contextualReplies", contextualReplies);
 route.post("/interactiveList", interactiveList);
 
