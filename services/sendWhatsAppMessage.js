@@ -1,7 +1,5 @@
 import axios from "axios";
 
-const WHATSAPP_URL = `https://graph.facebook.com/v25.0/${process.env.WHATSAPP_APP_PHONE_NUMBER_ID}/messages`;
-
 /**
  * Universal WhatsApp Sender
  * @param {string} to - recipient phone number (with country code)
@@ -14,6 +12,12 @@ export const sendWhatsAppMessage = async ({
   type = "text",
   payload = {},
 }) => {
+  const WHATSAPP_URL = `https://graph.facebook.com/v25.0/${process.env.WHATSAPP_APP_PHONE_NUMBER_ID}/messages`;
+
+  console.log(
+    "process.env.WHATSAPP_APP_PHONE_NUMBER_ID",
+    process.env.WHATSAPP_APP_PHONE_NUMBER_ID,
+  );
   try {
     if (!to) throw new Error("Recipient Number is required");
     const data = {
@@ -40,6 +44,7 @@ export const sendWhatsAppMessage = async ({
 };
 
 // types :
+
 // text
 // image
 // audio
@@ -47,7 +52,6 @@ export const sendWhatsAppMessage = async ({
 // document
 // location
 // contacts
-
 // TEMPLATE (Business Use)
 // INTERACTIVE BUTTON
 // interactive LIST

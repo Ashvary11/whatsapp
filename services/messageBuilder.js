@@ -123,13 +123,23 @@ export const buildMessage = ({ type, data = {} }) => {
             body: {
               text: data.body,
             },
+            ...(data.footer && {
+              footer: {
+                text: data.footer,
+              },
+            }),
             action: {
-              buttons: data.buttons, // array required
+              buttons: data.options.map((option, index) => ({
+                type: "reply",
+                reply: {
+                  id: `option_${index + 1}`, // scalable id
+                  title: option,
+                },
+              })),
             },
           },
         },
       };
-
     case "interactive_list":
       return {
         type: "interactive",
@@ -139,24 +149,51 @@ export const buildMessage = ({ type, data = {} }) => {
             body: {
               text: data.body,
             },
+            ...(data.footer && {
+              footer: {
+                text: data.footer,
+              },
+            }),
             action: {
               button: data.buttonText || "View",
-              sections: data.sections,
+              sections: [
+                {
+                  title: data.sectionTitle || "Options",
+                  rows: data.options.map((option, index) => ({
+                    id: `option_${index + 1}`,
+                    title: option.title,
+                    ...(option.description && {
+                      description: option.description,
+                    }),
+                  })),
+                },
+              ],
             },
           },
         },
       };
-
     case "contacts":
-      if (!data.contacts) throw new Error("Contacts array is required");
+      if (!data.contacts || !Array.isArray(data.contacts)) {
+        throw new Error("Contacts array is required");
+      }
 
       return {
         type: "contacts",
         payload: {
-          contacts: data.contacts,
+          contacts: data.contacts.map((contact) => ({
+            name: {
+              formatted_name: contact.name,
+              first_name: contact.name,
+            },
+            phones: [
+              {
+                phone: contact.phone,
+                type: "MOBILE",
+              },
+            ],
+          })),
         },
       };
-
     case "reaction":
       if (!data.message_id || !data.emoji)
         throw new Error("message_id and emoji required");
@@ -176,9 +213,25 @@ export const buildMessage = ({ type, data = {} }) => {
   }
 };
 
-
 // type: "interactive"
 //         ↓
 //    interactive.type:
 //         ↓
 //   "button" | "list" | "product" | "product_list" | "flow"
+
+// "buttons": [
+//             {
+//                 "type": "reply",
+//                 "reply": {
+//                     "id": "yes_option",
+//                     "title": "Yes"
+//                 }
+//             },
+//             {
+//                 "type": "reply",
+//                 "reply": {
+//                     "id": "no_option",
+//                     "title": "No"
+//                 }
+//             }
+//         ]

@@ -2,6 +2,8 @@ import { handleMessage } from "../services/autoMessageHandler.js";
 
 // Webhook Verification (GET)
 export const verifyWebhook = (req, res) => {
+  // console.log("process.env.WEBHOOK_VERIFY_TOKEN",process.env.WEBHOOK_VERIFY_TOKEN);
+
   const mode = req.query["hub.mode"];
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
@@ -26,11 +28,12 @@ export const receiveMessage = async (req, res) => {
 
     //   Incoming Message
     if (value?.messages) {
+      // for (const message of value.messages) {
       const message = value.messages[0];
       console.log("📩 New Message Received");
       console.log("From:", message.from, "Type:", message.type);
 
-      await handleMessage(message); //auto Response And Message Handler with Message type
+      // await handleMessage(message); //auto Response And Message Handler with Message type
     }
 
     //  Message Status Updates

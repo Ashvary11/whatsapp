@@ -1,4 +1,4 @@
-import { sendMessage } from "../controller/sendMessage.js";
+import { sendWhatsAppMessage } from "../services/sendWhatsAppMessage.js";
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 

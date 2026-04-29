@@ -1,5 +1,5 @@
-import { sendWhatsAppMessage } from "../services/sendWhatsAppMessage";
-import { buildMessage } from "../services/messageBuilder";
+import { sendWhatsAppMessage } from "../services/sendWhatsAppMessage.js";
+import { buildMessage } from "../services/messageBuilder.js";
 
 export const sendMessageController = async (req, res) => {
   try {
@@ -19,6 +19,7 @@ export const sendMessageController = async (req, res) => {
       return res.status(500).json({
         success: false,
         message: "Failed to send message",
+      
       });
     }
 

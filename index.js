@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
+dotenv.config();
 import express from "express";
-dotenv.config({ path: "./config/.env", quiet: true });
-import connectToDb from "./config/db.js";
+// import connectToDb from "./config/db.js";
 import morgan from "morgan";
-import webhookRoute from "./routes/webhookRoute.js"; 
+import webhookRoute from "./routes/webhookRoute.js";
 import whatsappRoutes from "./routes/whatsappRoute.js";
 
 const app = express();
@@ -13,7 +13,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => res.send("Server is running")); 
+app.get("/", (req, res) => res.send("Server is running"));
 app.use("/webhook", webhookRoute);
 app.use("/api/whatsapp", whatsappRoutes);
 
