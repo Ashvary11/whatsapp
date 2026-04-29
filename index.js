@@ -3,8 +3,8 @@ import express from "express";
 dotenv.config({ path: "./config/.env", quiet: true });
 import connectToDb from "./config/db.js";
 import morgan from "morgan";
-import fetchRoute from "./routes/dummyRoute.js";
-import webhookRoute from "./routes/webhookRoute.js";
+import webhookRoute from "./routes/webhookRoute.js"; 
+import whatsappRoutes from "./routes/whatsappRoute.js";
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -13,10 +13,9 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => res.send("Server is running"));
-app.use("/data", fetchRoute);
+app.get("/", (req, res) => res.send("Server is running")); 
 app.use("/webhook", webhookRoute);
-
+app.use("/api/whatsapp", whatsappRoutes);
 
 app.listen(PORT, () => {
   console.log(
